@@ -1,0 +1,63 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class CurrencyConverter {
+
+    // Static exchange rates (example rates)
+    private static final Map<String, Double> EXCHANGE_RATES = new HashMap<>();
+
+    static {
+        // Example exchange rates
+        EXCHANGE_RATES.put("USD", 1.0); // Base currency USD
+        EXCHANGE_RATES.put("EUR", 0.85);
+        EXCHANGE_RATES.put("GBP", 0.75);
+        EXCHANGE_RATES.put("INR", 83.88);
+        EXCHANGE_RATES.put("JPY", 110.0);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Currency Converter");
+
+        // Get base currency
+        System.out.print("Enter base currency (e.g. USD, EUR): ");
+        String baseCurrency = scanner.next().toUpperCase();
+
+        // Validate base currency
+        if (!EXCHANGE_RATES.containsKey(baseCurrency)) {
+            System.out.println("Invalid base currency.");
+            return;
+        }
+
+        // Get target currency
+        System.out.print("Enter target currency (e.g. USD, EUR): ");
+        String targetCurrency = scanner.next().toUpperCase();
+
+        // Validate target currency
+        if (!EXCHANGE_RATES.containsKey(targetCurrency)) {
+            System.out.println("Invalid target currency.");
+            return;
+        }
+
+        // Get amount to convert
+        System.out.print("Enter amount to convert: ");
+        double amount = scanner.nextDouble();
+
+        // Perform conversion
+        double convertedAmount = convertCurrency(amount, baseCurrency, targetCurrency);
+
+        // Display result
+        System.out.printf("%.2f %s is equal to %.2f %s%n", amount, baseCurrency, convertedAmount, targetCurrency);
+
+        scanner.close();
+    }
+
+    private static double convertCurrency(double amount, String baseCurrency, String targetCurrency) {
+        double baseRate = EXCHANGE_RATES.get(baseCurrency);
+        double targetRate = EXCHANGE_RATES.get(targetCurrency);
+
+        return amount * (targetRate / baseRate);
+    }
+}
